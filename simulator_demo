@@ -1,0 +1,168 @@
+import java.util.HashMap;
+import java.util.Map;
+
+// 装置类扩展了 message 和 knock 属性，并提供了记录硬件信息变化的方法
+abstract class Device {
+    private String name;
+    private Map<String, String> message; // 物理环境信息
+    private Map<String, String> knock;   // 配置信息
+    private Map<String, String> hardwareInfo;  // 记录硬件信息变化的时空位置
+
+    public Device(String name) {
+        this.name = name;
+        this.message = new HashMap<>();
+        this.knock = new HashMap<>();
+        this.hardwareInfo = new HashMap<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Map<String, String> getMessage() {
+        return message;
+    }
+
+    public Map<String, String> getKnock() {
+        return knock;
+    }
+
+    public Map<String, String> getHardwareInfo() {
+        return hardwareInfo;
+    }
+
+    // 记录硬件信息变化的方法
+    public void recordHardwareInfo(String timeSpacePosition, String hardwareInfo) {
+        this.hardwareInfo.put(timeSpacePosition, hardwareInfo);
+    }
+
+    // 抽象方法，由子类实现具体的装置行为
+    public abstract void operate();
+}
+
+// 控制器类扩展了控制指令和优化控制算法
+abstract class Controller {
+    private String name;
+    private String controlInstruction;
+    private String optimizationAlgorithm;  // 优化控制算法，具体实现留待扩展
+
+    public Controller(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getControlInstruction() {
+        return controlInstruction;
+    }
+
+    public String getOptimizationAlgorithm() {
+        return optimizationAlgorithm;
+    }
+
+    // 设置控制指令的方法
+    public void setControlInstruction(String controlInstruction) {
+        this.controlInstruction = controlInstruction;
+    }
+
+    // 抽象方法，由子类实现具体的控制器行为
+    public abstract void control(Device device);
+
+    // 抽象方法，由子类实现具体的优化控制算法
+    public abstract void optimizeControl(Device device, TargetManager targetManager);
+}
+
+// 更新目标管理类，添加目标条件
+abstract class TargetManager {
+    private Map<String, String> targetConditions; // 目标条件，例如配置内存资源最大化
+
+    public TargetManager() {
+        this.targetConditions = new HashMap<>();
+    }
+
+    public Map<String, String> getTargetConditions() {
+        return targetConditions;
+    }
+
+    // 添加目标条件的方法
+    public void addTargetCondition(String conditionName, String conditionValue) {
+        targetConditions.put(conditionName, conditionValue);
+    }
+
+    // 抽象方法，由子类实现具体的目标管理行为
+    public abstract void manageTarget(Device device);
+}
+
+// 更新环境类，添加物理环境的干扰因素
+abstract class Environment {
+    private Map<String, String> environmentalFactors; // 物理环境的干扰因素，例如温度变化
+
+    public Environment() {
+        this.environmentalFactors = new HashMap<>();
+    }
+
+    public Map<String, String> getEnvironmentalFactors() {
+        return environmentalFactors;
+    }
+
+    // 添加干扰因素的方法
+    public void addEnvironmentalFactor(String factorName, String factorValue) {
+        environmentalFactors.put(factorName, factorValue);
+    }
+
+    // 抽象方法，由子类实现具体的环境行为
+    public abstract void simulate();
+}
+
+// 具体装置类的例子
+class SpecificDevice extends Device {
+    public SpecificDevice(String name) {
+        super(name);
+    }
+
+    @Override
+    public void operate() {
+        // 具体的装置行为实现
+        System.out.println("装置 " + getName() + " 正在运行...");
+    }
+}
+
+// 具体控制器类的例子
+class SpecificController extends Controller {
+    public SpecificController(String name) {
+        super(name);
+    }
+
+    @Override
+    public void control(Device device) {
+        // 具体的控制器行为实现
+        System.out.println("控制器 " + getName() + " 正在控制装置 " + device.getName());
+        device.operate();
+    }
+
+    @Override
+    public void optimizeControl(Device device, TargetManager targetManager) {
+        // 具体的优化控制算法实现
+        // 留待扩展
+    }
+}
+
+// 具体目标管理类的例子
+class SpecificTargetManager extends TargetManager {
+    @Override
+    public void manageTarget(Device device) {
+        // 具体的目标管理行为实现
+        System.out.println("目标管理器正在管理装置 " + device.getName());
+    }
+}
+
+// 具体环境类的例子
+class SpecificEnvironment extends Environment {
+    @Override
+    public void simulate() {
+        // 具体的环境行为实现
+        System.out.println("模拟器环境正在模拟...");
+    }
+}
